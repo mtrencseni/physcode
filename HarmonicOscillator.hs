@@ -1,5 +1,6 @@
 
 -- todo: dimensions?
+-- https://github.com/bjornbm/dimensional-tf
 -- todo: k>0
 -- kinematics
 type Time = Double
