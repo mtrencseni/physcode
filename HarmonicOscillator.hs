@@ -1,36 +1,36 @@
 
--- todo: dimensions?
--- https://github.com/bjornbm/dimensional-tf
+import qualified Numeric.Units.Dimensional.Prelude as D
+import Numeric.Units.Dimensional.Prelude((+), (-), (*), (/), (*~), kilo, gram, meter, second)
+import Prelude (Double, ($), print)
+import Numeric.NumType (Zero, Pos1, Neg2)
+
 -- todo: k>0
 -- kinematics
-type Time = Double
-type TimeInterval = Double
-type Position = Double
-type PositionInterval = Double
-type Velocity = Double
-type VelocityInterval = Double
-type Momentum = Double
+type Time = D.Time Double
+type Position = D.Length Double
+type Velocity = D.Velocity Double
+--type Momentum = Double
 type Configuration  = (Position, Velocity)
 type State          = (Time, Position, Velocity)
 type PositionF      = Time -> Position
 type VelocityF      = Time -> Velocity
 type ConfigurationF = Time -> Configuration
 -- dynamics
-type Energy = Double
-type Force = Double
-type Mass = Double
-type SpringConstant = Double
+type Energy = D.Energy Double
+type Force = D.Force Double
+type Mass = D.Mass Double
+type SpringConstant = (D.Quantity (D.Dim Zero Pos1 Neg2 Zero Zero Zero Zero)) Double -- kg/s^2
 type Parameters     = (Mass, SpringConstant)
 type EnergyF        = Parameters -> Configuration -> Energy
-type ForceF         = Parameters -> Configuration -> PositionInterval -> Force
+type ForceF         = Parameters -> Configuration -> Position -> Force
 
 -- position to velocity
-pf2vf :: PositionF -> TimeInterval -> VelocityF
+pf2vf :: PositionF -> Time -> VelocityF
 pf2vf x dt = (\t -> v(t))
     where v(t) = (x(t + dt) - x(t)) / dt
 
 -- position to configuration
-pf2cf :: PositionF -> TimeInterval -> ConfigurationF
+pf2cf :: PositionF -> Time -> ConfigurationF
 pf2cf x dt = (\t -> (x t, pf2vf x dt $ t))
 
 -- lagrangian to force
@@ -40,7 +40,7 @@ lf2ff l = \(m, k) -> \(x, v) -> \dx -> (l (m, k) (x + dx, v) - l (m, k) (x, v)) 
 
 -- lagrangian to potential energy
 lf2pf :: EnergyF -> EnergyF
-lf2pf l = \(m, k) -> \(x, v) -> 0.5 * m * v * v - l (m, k) (x, v)
+lf2pf l = \(m, k) -> \(x, v) -> m * v * v / D._2 - l (m, k) (x, v)
 
 -- springHamiltonian :: Mass -> Configuration -> Energy
 -- springHamiltonian m (x, v) = conjugateMomentum * v - springLagrangian m (x, v)
@@ -53,17 +53,17 @@ lf2pf l = \(m, k) -> \(x, v) -> 0.5 * m * v * v - l (m, k) (x, v)
 -- this is the only function I'm specifying explicitly
 -- this is the theory
 lagrangian :: EnergyF
-lagrangian (m, k) (x, v) = 0.5 * m * v * v - 0.5 * k * x * x
+lagrangian (m, k) (x, v) = m * v * v / D._2 - k * x * x / D._2
 
 main = do
     print $ f
     where
         f = (lf2ff lagrangian) (m, k) (x, v) dx
-        m = 1
-        k = 3
-        x = 5
-        v = 9
-        dx = 0.001
+        m =  1     *~ (kilo gram)
+        k =  3     *~ ((kilo gram) / (second * second))
+        x =  5     *~ (meter)
+        v =  9     *~ (meter / second)
+        dx = 0.001 *~ (meter)
     -- print $ config 5
     -- where
     --     x  = (\t -> t * t)
