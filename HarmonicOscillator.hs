@@ -1,10 +1,14 @@
-
 import qualified Numeric.Units.Dimensional.Prelude as D
-import Numeric.Units.Dimensional.Prelude((+), (-), (*), (/), (*~), kilo, gram, meter, second)
-import Prelude (Double, ($), print)
-import Numeric.NumType (Zero, Pos1, Neg2)
+import Numeric.Units.Dimensional.Prelude (
+  (+), (-), (*), (/), (*~), (/~), kilo, gram, meter, second
+  )
+import Prelude (
+  Double, ($), print, (>)
+  )
+import Numeric.NumType (
+  Zero, Pos1, Neg2
+  )
 
--- todo: k>0
 -- kinematics
 type Time = D.Time Double
 type Position = D.Length Double
@@ -50,10 +54,11 @@ lf2pf l = \(m, k) -> \(x, v) -> m * v * v / D._2 - l (m, k) (x, v)
 -- conjugateMomentum L = D . L (v, x) v
 
 -- http://www.lecture-notes.co.uk/susskind/classical-mechanics/lecture-5/harmonic-oscillator/
--- this is the only function I'm specifying explicitly
--- this is the theory
+-- this is the only function I'm specifying explicitly, this is the theory
 lagrangian :: EnergyF
-lagrangian (m, k) (x, v) = m * v * v / D._2 - k * x * x / D._2
+lagrangian (m, k) (x, v)
+  | k /~ ((kilo gram) / (second * second)) > 0 -- k > 0
+  = m * v * v / D._2 - k * x * x / D._2
 
 main = do
     print $ f
@@ -64,8 +69,3 @@ main = do
         x =  5     *~ (meter)
         v =  9     *~ (meter / second)
         dx = 0.001 *~ (meter)
-    -- print $ config 5
-    -- where
-    --     x  = (\t -> t * t)
-    --     dt = 0.001
-    --     config = pf2cf x dt
