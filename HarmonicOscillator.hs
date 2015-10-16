@@ -11,9 +11,10 @@ import Numeric.NumType (
 
 -- I.   Kinematics
 -- I.a  Coordinates and related
-type Time = D.Time Double
-type Position = D.Length Double
-type Velocity = D.Velocity Double
+type Time          = D.Time Double
+type Position      = D.Length Double
+type Velocity      = D.Velocity Double
+type Acceleration  = D.Acceleration Double
 -- I.b  Configuration and state
 type Configuration  = (Position, Velocity)
 type State          = (Time, Position, Velocity)
@@ -21,15 +22,15 @@ type PositionF      = Time -> Position
 type VelocityF      = Time -> Velocity
 type ConfigurationF = Time -> Configuration
 -- II.  Dynamics
-type Energy = D.Energy Double
-type Force = D.Force Double
-type Mass = D.Mass Double
+type Energy         = D.Energy Double
+type Force          = D.Force Double
+type Mass           = D.Mass Double
 type EnergyF        = Parameters -> Configuration -> Energy
 type ForceF         = Parameters -> Configuration -> Position -> Force
+type AccelerationF  = Parameters -> Configuration -> Position -> Acceleration
 -- III. Constants
 type SpringConstant = (D.Quantity (D.Dim Zero Pos1 Neg2 Zero Zero Zero Zero)) Double -- kg/s^2
 type Parameters     = (Mass, SpringConstant)
-
 
 -- position x(t) to velocity v(t)
 pf2vf :: PositionF -> Time -> VelocityF
@@ -40,12 +41,16 @@ pf2vf x dt = (\t -> v(t))
 pf2cf :: PositionF -> Time -> ConfigurationF
 pf2cf x dt = (\t -> (x t, pf2vf x dt $ t))
 
--- lagrangian L(m, k, x(t), v(t)) to force F(m, k, dx, x(t), v(t))
+-- lagrangian L(m, k, x, v) to force F(m, k, x, v)
 lf2ff :: EnergyF -> ForceF
 lf2ff l = \(m, k) -> \(x, v) -> \dx -> (l (m, k) (x + dx, v) - l (m, k) (x, v)) / dx
 -- in case of the harmonic oscillator, this derivative works out to -k*x
 
--- lagrangian L(m, k, x(t), v(t)) to potential energy
+-- force F(m, k, x, v) to acceleration a(m, k, x, v)
+ff2af :: ForceF -> AccelerationF
+ff2af f = \(m, k) -> \(x, v) -> \dx -> (f (m, k) (x, v) dx) / m
+
+-- lagrangian L(m, k, x, v) to potential energy
 lf2pf :: EnergyF -> EnergyF
 lf2pf l = \(m, k) -> \(x, v) -> m * v * v / D._2 - l (m, k) (x, v)
 
