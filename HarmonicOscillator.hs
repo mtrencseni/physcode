@@ -9,52 +9,47 @@ import Numeric.NumType (
   Zero, Pos1, Neg2
   )
 
--- kinematics
+-- I.   Kinematics
+-- I.a  Coordinates and related
 type Time = D.Time Double
 type Position = D.Length Double
 type Velocity = D.Velocity Double
---type Momentum = Double
+-- I.b  Configuration and state
 type Configuration  = (Position, Velocity)
 type State          = (Time, Position, Velocity)
 type PositionF      = Time -> Position
 type VelocityF      = Time -> Velocity
 type ConfigurationF = Time -> Configuration
--- dynamics
+-- II.  Dynamics
 type Energy = D.Energy Double
 type Force = D.Force Double
 type Mass = D.Mass Double
-type SpringConstant = (D.Quantity (D.Dim Zero Pos1 Neg2 Zero Zero Zero Zero)) Double -- kg/s^2
-type Parameters     = (Mass, SpringConstant)
 type EnergyF        = Parameters -> Configuration -> Energy
 type ForceF         = Parameters -> Configuration -> Position -> Force
+-- III. Constants
+type SpringConstant = (D.Quantity (D.Dim Zero Pos1 Neg2 Zero Zero Zero Zero)) Double -- kg/s^2
+type Parameters     = (Mass, SpringConstant)
 
--- position to velocity
+
+-- position x(t) to velocity v(t)
 pf2vf :: PositionF -> Time -> VelocityF
 pf2vf x dt = (\t -> v(t))
     where v(t) = (x(t + dt) - x(t)) / dt
 
--- position to configuration
+-- position x(t) to configuration (x(t), v(t))
 pf2cf :: PositionF -> Time -> ConfigurationF
 pf2cf x dt = (\t -> (x t, pf2vf x dt $ t))
 
--- lagrangian to force
+-- lagrangian L(m, k, x(t), v(t)) to force F(m, k, dx, x(t), v(t))
 lf2ff :: EnergyF -> ForceF
 lf2ff l = \(m, k) -> \(x, v) -> \dx -> (l (m, k) (x + dx, v) - l (m, k) (x, v)) / dx
 -- in case of the harmonic oscillator, this derivative works out to -k*x
 
--- lagrangian to potential energy
+-- lagrangian L(m, k, x(t), v(t)) to potential energy
 lf2pf :: EnergyF -> EnergyF
 lf2pf l = \(m, k) -> \(x, v) -> m * v * v / D._2 - l (m, k) (x, v)
 
--- springHamiltonian :: Mass -> Configuration -> Energy
--- springHamiltonian m (x, v) = conjugateMomentum * v - springLagrangian m (x, v)
-
---conjugateMomentum = del_v L
--- conjugateMomentum :: (Mass -> Configuration -> Energy) -> (Mass -> Configuration -> Momentum)
--- conjugateMomentum L = D . L (v, x) v
-
--- http://www.lecture-notes.co.uk/susskind/classical-mechanics/lecture-5/harmonic-oscillator/
--- this is the only function I'm specifying explicitly, this is the theory
+-- the harmonic oscillator lagrangian L(m, k, x, v) = 1/2 * m * v^2 - 1/2 * k * x^2
 lagrangian :: EnergyF
 lagrangian (m, k) (x, v)
   | k /~ ((kilo gram) / (second * second)) > 0 -- k > 0
