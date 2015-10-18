@@ -3,7 +3,7 @@ import Numeric.Units.Dimensional.Prelude (
   (+), (-), (*), (/), (*~), (/~), kilo, gram, meter, second
   )
 import Prelude (
-  Integer, Double, ($), print, (>), (==), Maybe(..)
+  Integer, Double, ($), print, (>), (==), Maybe(..), pred
   )
 import Numeric.NumType (
   Zero, Pos1, Neg1, Neg2
@@ -51,11 +51,7 @@ ff2af f = \(m, k, c) -> \(x, v) -> (f (m, k, c) (x, v)) / m
 solve :: AccelerationF -> Parameters -> Configuration -> Time -> Integer -> [Configuration]
 solve a params config0 dt n = unfoldr f (config0, n)
   where f (config, i) = if i == 0 then Nothing
-                        else           Just(config, (step a params config dt, i - 1))
---solve a params config0 dt n = unfoldr (\(config, i) ->
---                        if i == 0 then Nothing
---                        else           Just(config, (step a params config dt, i - 1)))
---                        (config0, n)
+                        else           Just(config, (step a params config dt, pred i))
 
 step :: AccelerationF -> Parameters -> Configuration -> Time -> Configuration
 step a (m, k, c) (x, v) dt = (x + dx, v + dv)
@@ -66,13 +62,13 @@ step a (m, k, c) (x, v) dt = (x + dx, v + dv)
 force :: ForceF
 force (_, k, c) (x, v) = ((-1) *~ D.one) * k * x - c * v
 
---main = do
---    print $ solve a (m, k, c) (x0, v0) dt 3
---    where
---        a =   ff2af force
---        m =   1     *~ (kilo gram)
---        k =   3     *~ ((kilo gram) / (second * second))
---        c =   4     *~ ((kilo gram) / second)
---        x0 =  5     *~ (meter)
---        v0 =  9     *~ (meter / second)
---        dt =  0.001 *~ (second)
+main = do
+    print $ solve a (m, k, c) (x0, v0) dt 3
+    where
+        a =   ff2af force
+        m =   1     *~ (kilo gram)
+        k =   3     *~ ((kilo gram) / (second * second))
+        c =   4     *~ ((kilo gram) / second)
+        x0 =  5     *~ (meter)
+        v0 =  9     *~ (meter / second)
+        dt =  0.001 *~ (second)
