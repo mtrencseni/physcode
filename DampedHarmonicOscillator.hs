@@ -3,12 +3,12 @@ import Numeric.Units.Dimensional.Prelude (
   (+), (-), (*), (/), (*~), (/~), kilo, gram, meter, second
   )
 import Prelude (
-  Integer, Double, ($), print, (>), (==), Maybe(..), pred
+  Integer, Double, ($), print, (>), (==), Maybe(..), pred, sin, cos
   )
 import Numeric.NumType (
   Zero, Pos1, Neg1, Neg2
   )
-import Data.List (unfoldr)
+import Data.List (iterate, take)
 
 -- I.   Kinematics
 -- I.a  Coordinates and related
@@ -48,22 +48,18 @@ ff2af :: ForceF -> AccelerationF
 ff2af f = \(m, k, c) -> \(x, v) -> (f (m, k, c) (x, v)) / m
 
 -- solve the system at steps dt for n steps
-solve :: AccelerationF -> Parameters -> Configuration -> Time -> Integer -> [Configuration]
-solve a params config0 dt n = unfoldr f (config0, n)
-  where f (config, i) = if i == 0 then Nothing
-                        else           Just(config, (step a params config dt, pred i))
-
-step :: AccelerationF -> Parameters -> Configuration -> Time -> Configuration
-step a (m, k, c) (x, v) dt = (x + dx, v + dv)
-  where dx = v * dt
-        dv = a (m, k, c) (x, v) * dt
+solve :: AccelerationF -> Parameters -> Configuration -> Time -> [Configuration]
+solve a params config0 dt = iterate step config0
+  where step (x, v) = (x + dx, v + dv)
+                       where dx = v * dt
+                             dv = a params (x, v) * dt 
 
 -- the damped oscillator force f(k, c, x, v) = - k*x - c*v
 force :: ForceF
 force (_, k, c) (x, v) = ((-1) *~ D.one) * k * x - c * v
 
 main = do
-    print $ solve a (m, k, c) (x0, v0) dt 3
+    print $ take 3 $ solve a (m, k, c) (x0, v0) dt
     where
         a =   ff2af force
         m =   1     *~ (kilo gram)
