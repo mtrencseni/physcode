@@ -3,11 +3,12 @@ import Numeric.Units.Dimensional.Prelude (
   (+), (-), (*), (/), (*~), (/~), kilo, gram, meter, second
   )
 import Prelude (
-  Double, ($), print, (>)
+  Integer, Double, ($), print, (>), (==), Maybe(..)
   )
 import Numeric.NumType (
   Zero, Pos1, Neg1, Neg2
   )
+import Data.List (unfoldr)
 
 -- I.   Kinematics
 -- I.a  Coordinates and related
@@ -46,20 +47,32 @@ pf2cf x dt = (\t -> (x t, pf2vf x dt $ t))
 ff2af :: ForceF -> AccelerationF
 ff2af f = \(m, k, c) -> \(x, v) -> (f (m, k, c) (x, v)) / m
 
--- given initial parameters (x0, v0), solve the system at steps dt for n steps
---solve :: AccelerationF -> Configuration -> Time -> Integer -> [Configuration]
---solve a (x0, v0) dt n = ...
+-- solve the system at steps dt for n steps
+solve :: AccelerationF -> Parameters -> Configuration -> Time -> Integer -> [Configuration]
+solve a params config0 dt n = unfoldr f (config0, n)
+  where f (config, i) = if i == 0 then Nothing
+                        else           Just(config, (step a params config dt, i - 1))
+--solve a params config0 dt n = unfoldr (\(config, i) ->
+--                        if i == 0 then Nothing
+--                        else           Just(config, (step a params config dt, i - 1)))
+--                        (config0, n)
+
+step :: AccelerationF -> Parameters -> Configuration -> Time -> Configuration
+step a (m, k, c) (x, v) dt = (x + dx, v + dv)
+  where dx = v * dt
+        dv = a (m, k, c) (x, v) * dt
 
 -- the damped oscillator force f(k, c, x, v) = - k*x - c*v
 force :: ForceF
 force (_, k, c) (x, v) = ((-1) *~ D.one) * k * x - c * v
 
 --main = do
---    print $ f
+--    print $ solve a (m, k, c) (x0, v0) dt 3
 --    where
---        f = (lf2ff lagrangian) (m, k) (x, v) dx
---        m =  1     *~ (kilo gram)
---        k =  3     *~ ((kilo gram) / (second * second))
---        x =  5     *~ (meter)
---        v =  9     *~ (meter / second)
---        dx = 0.001 *~ (meter)
+--        a =   ff2af force
+--        m =   1     *~ (kilo gram)
+--        k =   3     *~ ((kilo gram) / (second * second))
+--        c =   4     *~ ((kilo gram) / second)
+--        x0 =  5     *~ (meter)
+--        v0 =  9     *~ (meter / second)
+--        dt =  0.001 *~ (second)
