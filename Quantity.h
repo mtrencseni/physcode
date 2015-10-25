@@ -139,14 +139,6 @@ Quantity<l1+l2, m1+m2, t1+t2, R> operator*(Quantity<l1, m1, t1, T> q1, Quantity<
     return Quantity<l1+l2, m1+m2, t1+t2, R>(res);
 }
 
-/* multiply two quantities */
-template<int l1, int m1, int t1, int l2, int m2, int t2, class T, class R>
-Quantity<l1+l2, m1+m2, t1+t2, R> Mul(Quantity<l1, m1, t1, T> q1, Quantity<l2, m2, t2, T> q2)
-{
-    R res = q1.value * q2.value;
-    return Quantity<l1+l2, m1+m2, t1+t2, R>(res);
-}
-
 /* divide two quantities */
 template<int l1, int m1, int t1, int l2, int m2, int t2, class T>
 Quantity<l1-l2, m1-m2, t1-t2, T> operator/(Quantity<l1, m1, t1, T> q1, Quantity<l2, m2, t2, T> q2)
@@ -161,7 +153,7 @@ Quantity<l, m, t, T> operator+(Quantity<l, m, t, T> q1, Quantity<l, m, t, T> q2)
     return Quantity<l, m, t, T>(q1.value + q2.value);
 }
 
-/* add two quantities */
+/* divide two quantities */
 template<int l, int m, int t, class T>
 Quantity<l, m, t, T> operator-(Quantity<l, m, t, T> q1, Quantity<l, m, t, T> q2)
 {
