@@ -132,11 +132,11 @@ Quantity<-l, -m, -t, T> operator/(T val, Quantity<l, m, t, T> q)
 }
 
 /* multiply two quantities */
-template<int l1, int m1, int t1, int l2, int m2, int t2, class T, class R>
-Quantity<l1+l2, m1+m2, t1+t2, R> operator*(Quantity<l1, m1, t1, T> q1, Quantity<l2, m2, t2, T> q2)
+template<int l1, int m1, int t1, int l2, int m2, int t2, class T>
+Quantity<l1+l2, m1+m2, t1+t2, T> operator*(Quantity<l1, m1, t1, T> q1, Quantity<l2, m2, t2, T> q2)
 {
-    R res = q1.value * q2.value;
-    return Quantity<l1+l2, m1+m2, t1+t2, R>(res);
+    T res = q1.value * q2.value;
+    return Quantity<l1+l2, m1+m2, t1+t2, T>(res);
 }
 
 /* divide two quantities */

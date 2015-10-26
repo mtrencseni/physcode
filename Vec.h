@@ -25,7 +25,7 @@ Vec<n, T> operator-(Vec<n, T> a, Vec<n, T> b) {
 /* multiply two Vecs */
 template<unsigned int n, class T>
 T operator*(Vec<n, T> a, Vec<n, T> b) {
-    T res;
+    T res = 0;
     for (auto i = 0; i < n; i++)
         res += (a.val[i] * b.val[i]);
     return res;
