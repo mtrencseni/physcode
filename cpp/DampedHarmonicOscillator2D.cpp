@@ -54,8 +54,8 @@ int main()
     Configuration c = { (2.0 * ex + 2.0 * ey) * meter,
                         (0.0 * ex + 0.0 * ey) * meter / second };
     Time          dt = 0.001 * second;
-    for (auto i = 0; i < 10000; i++) {
-        std::cout << (std::string)(((double)i)*dt) << ", " << (std::string)c.position << std::endl;
+    for (double i = 0; i < 10000; i++) {
+        std::cout << (i * dt).str() << ", " << c.position.str() << std::endl;
         c = step(p, c, dt);
     }
     return 0;

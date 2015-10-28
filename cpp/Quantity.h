@@ -15,7 +15,7 @@ std::string format(const std::string base, const int exponent) {
 
 template<int l, int m, int t>
 struct Unit {
-    const operator std::string() {
+    const std::string str() {
         std::ostringstream s;
         if (l != 0) {
             s << format("meter", l);
@@ -42,12 +42,12 @@ struct Quantity {
 	Quantity (T v) : value(v) {}
 	Quantity () : value(0) {}
 	Quantity& operator=(T v) { value = v; }
-    const operator std::string() {
+    const std::string str() {
         Unit<l, m, t> u;
         std::ostringstream s;
         s << value;
         s << " ";
-        s << (std::string)u;
+        s << u.str();
         return s.str();
     }
 };

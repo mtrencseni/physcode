@@ -36,12 +36,14 @@ Configuration step(Parameters p, Configuration c, Time dt) {
 
 int main()
 {
-   Parameters     p = { 1.0 * kilo * gram, 3.0 * kilo * gram / (second * second), 5.0 * kilo * gram / second };
+   Parameters     p = { 1.0 * kilo * gram,
+                        3.0 * kilo * gram / (second * second),
+                        5.0 * kilo * gram / second };
    Configuration  c = { 5.0 * meter, 9.0 * meter / second };
    Time          dt = 0.001 * second;
    
    for (auto i = 0; i < 5; i++) {
-       std::cout << c.x << ", " << c.v << std::endl;
+       std::cout << c.x.str() << ", " << c.v.str() << std::endl;
        c = step(p, c, dt);
    }
    

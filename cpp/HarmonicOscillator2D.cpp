@@ -62,8 +62,8 @@ int main()
                         (0.0 * ex + 0.0 * ey) * meter / second };
     Length        dx = 0.001 * meter;
     Time          dt = 0.001 * second;
-    for (auto i = 0; i < 10000; i++) {
-        std::cout << (std::string)(((double)i)*dt) << ", " << (std::string)c.position << std::endl;
+    for (double i = 0; i < 10000; i++) {
+        std::cout << (i * dt).str() << ", " << c.position.str() << std::endl;
         c = step(p, c, dx, dt);
     }
     return 0;

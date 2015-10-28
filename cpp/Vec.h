@@ -4,7 +4,7 @@
 template<unsigned int n, class T>
 struct Vec {
     T val[n];
-    operator std::string() {
+    const std::string str() {
         std::ostringstream s;
         s << "(";
         for (auto i = 0; i < n; i++) {

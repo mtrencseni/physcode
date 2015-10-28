@@ -33,7 +33,7 @@ int main()
    Configuration  c = { 5.0 * meter, 9.0 * meter / second };
    Length        dx = 0.001 * meter;
    
-   std::cout << (std::string)force(p, c, dx) << std::endl;
+   std::cout << force(p, c, dx).str() << std::endl;
    
    return 0;
 }

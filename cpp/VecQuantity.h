@@ -11,12 +11,12 @@ struct VecQuantity {
         value.val[i] = v;
         return *this;
     }
-    operator std::string() {
+    const std::string str() {
         Unit<l, m, t> u;
         std::ostringstream s;
-        s << (std::string)value;
+        s << value.str();
         s << " ";
-        s << (std::string)u;
+        s << u.str();
         return s.str();
     }
     friend std::ostream& operator<<(std::ostream& o, Quantity<l, m, t, T>& q) {
