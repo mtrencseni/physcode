@@ -1,13 +1,26 @@
+#include <string>
+#include <sstream>
 
 template<unsigned int n, class T>
 struct Vec {
     T val[n];
+    operator std::string() {
+        std::ostringstream s;
+        s << "(";
+        for (auto i = 0; i < n; i++) {
+            s << val[i];
+            if (i < (n-1))
+                s << ", ";
+        }
+        s << ")";
+        return s.str();
+    }
 };
 
 /* add two Vecs */
 template<unsigned int n, class T>
-Vec<n, T> operator+(Vec<n, T> a, Vec<n, T> b) {
-    T res;
+Vec<n, T> operator+(const Vec<n, T>& a, const Vec<n, T>& b) {
+    Vec<n, T> res;
     for (auto i = 0; i < n; i++)
         res.val[i] = a.val[i] + b.val[i];
     return res;
@@ -15,8 +28,8 @@ Vec<n, T> operator+(Vec<n, T> a, Vec<n, T> b) {
 
 /* subtract two Vecs */
 template<unsigned int n, class T>
-Vec<n, T> operator-(Vec<n, T> a, Vec<n, T> b) {
-    T res;
+Vec<n, T> operator-(const Vec<n, T>& a, const Vec<n, T>& b) {
+    Vec<n, T> res;
     for (auto i = 0; i < n; i++)
         res.val[i] = a.val[i] - b.val[i];
     return res;
@@ -24,7 +37,7 @@ Vec<n, T> operator-(Vec<n, T> a, Vec<n, T> b) {
 
 /* multiply two Vecs */
 template<unsigned int n, class T>
-T operator*(Vec<n, T> a, Vec<n, T> b) {
+T operator*(const Vec<n, T>& a, const Vec<n, T>& b) {
     T res = 0;
     for (auto i = 0; i < n; i++)
         res += (a.val[i] * b.val[i]);
@@ -33,7 +46,7 @@ T operator*(Vec<n, T> a, Vec<n, T> b) {
 
 /* multiply Vec by a scalar */
 template<unsigned int n, class T>
-Vec<n, T> operator*(Vec<n, T> a, T b) {
+Vec<n, T> operator*(const Vec<n, T>& a, const T& b) {
     Vec<n, T> res;
     for (auto i = 0; i < n; i++)
         res.val[i] = a.val[i] * b;
@@ -42,7 +55,7 @@ Vec<n, T> operator*(Vec<n, T> a, T b) {
 
 /* multiply a scalar by a Vec */
 template<unsigned int n, class T>
-Vec<n, T> operator*(T b, Vec<n, T> a) {
+Vec<n, T> operator*(const T& b, const Vec<n, T>& a) {
     Vec<n, T> res;
     for (auto i = 0; i < n; i++)
         res.val[i] = a.val[i] * b;
@@ -51,7 +64,7 @@ Vec<n, T> operator*(T b, Vec<n, T> a) {
 
 /* divide a Vec by a scalar */
 template<unsigned int n, class T>
-Vec<n, T> operator/(Vec<n, T> a, T b) {
+Vec<n, T> operator/(const Vec<n, T>& a, const T& b) {
     Vec<n, T> res;
     for (auto i = 0; i < n; i++)
         res.val[i] = a.val[i] / b;
