@@ -4,7 +4,13 @@
 
 /* === 1D Harmonic oscillator === */
 
-MAKE_ALL_TYPES(double);
+typedef Quantity<1,  0,  0, double> Length;
+typedef Quantity<0,  1,  0, double> Mass;
+typedef Quantity<0,  0,  1, double> Time;
+typedef Quantity<1,  0, -1, double> Velocity;
+typedef Quantity<1,  0, -2, double> Acceleration;
+typedef Quantity<1,  1, -2, double> Force;
+typedef Quantity<2,  1, -2, double> Energy;
 typedef Quantity<0,  1, -2, double> SpringConstant;
 
 struct Configuration {

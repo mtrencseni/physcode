@@ -167,21 +167,3 @@ Quantity<l, m, t, T> operator-(const Quantity<l, m, t, T>& q1,
 
 /* common multipliers */
 double kilo = 1000;
-
-#define LENGTH_TYPE(T, n)       typedef Quantity<1,  0,  0, T> n;
-#define MASS_TYPE(T, n)         typedef Quantity<0,  1,  0, T> n;
-#define TIME_TYPE(T, n)         typedef Quantity<0,  0,  1, T> n;
-#define VELOCITY_TYPE(T, n)     typedef Quantity<1,  0, -1, T> n;
-#define ACCELERATION_TYPE(T, n) typedef Quantity<1,  0, -2, T> n;
-#define FORCE_TYPE(T, n)        typedef Quantity<1,  1, -2, T> n;
-#define ENERGY_TYPE(T, n)       typedef Quantity<2,  1, -2, T> n;
-#define SPRING_CONSTANT(T, n)   typedef Quantity<0,  1, -2, T> n;
-
-#define MAKE_ALL_TYPES(T)               \
-    LENGTH_TYPE(T, Length)              \
-    MASS_TYPE(T, Mass)                  \
-    TIME_TYPE(T, Time)                  \
-    VELOCITY_TYPE(T, Velocity)          \
-    ACCELERATION_TYPE(T, Acceleration)  \
-    FORCE_TYPE(T, Force)                \
-    ENERGY_TYPE(T, Energy)
