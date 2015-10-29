@@ -16,8 +16,8 @@ typedef Quantity<0,  1, -2, double> SpringConstant;
 typedef Quantity<0,  1, -1, double> DampingConstant;
 
 struct Configuration {
-    Length   x;
-    Velocity v;
+    Length   position;
+    Velocity velocity;
 };
 
 struct Parameters {
@@ -30,7 +30,7 @@ Force force(Parameters p, Configuration c) {
     assert(p.m.value() > 0);
     assert(p.k.value() > 0);
     assert(p.c.value() > 0);
-    return -1.0 * p.k * c.x - p.c * c.v;
+    return -1.0 * (p.k * c.position) - (p.c * c.velocity);
 }
 
 Acceleration acceleration(Parameters p, Configuration c) {
@@ -38,9 +38,9 @@ Acceleration acceleration(Parameters p, Configuration c) {
 }
 
 Configuration step(Parameters p, Configuration c, Time dt) {
-    Length   dx = c.v * dt;
+    Length   dx = c.velocity * dt;
     Velocity dv = acceleration(p, c) * dt;
-    Configuration cp =  { c.x + dx, c.v + dv };
+    Configuration cp =  { c.position + dx, c.velocity + dv };
     return cp;
 }
 
@@ -53,7 +53,7 @@ int main()
     Time          dt = 0.001 * second;
 
     for (auto i = 0; i < 5; i++) {
-        std::cout << c.x.str() << ", " << c.v.str() << std::endl;
+        std::cout << c.position.str() << ", " << c.velocity.str() << std::endl;
         c = step(p, c, dt);
     }
 

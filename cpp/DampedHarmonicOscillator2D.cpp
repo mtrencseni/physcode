@@ -35,7 +35,7 @@ Force2 force(Parameters p, Configuration c) {
     assert(p.m.value() > 0);
     assert(p.k.value() > 0);
     assert(p.c.value() > 0);
-    return -1.0 * (p.k * c.position) - p.c * c.velocity;
+    return -1.0 * (p.k * c.position) - (p.c * c.velocity);
 }
 
 Acceleration2 acceleration(Parameters p, Configuration c) {

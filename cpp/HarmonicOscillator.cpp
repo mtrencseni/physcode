@@ -14,8 +14,8 @@ typedef Quantity<2,  1, -2, double> Energy;
 typedef Quantity<0,  1, -2, double> SpringConstant;
 
 struct Configuration {
-    Length   x;
-    Velocity v;
+    Length   position;
+    Velocity velocity;
 };
 
 struct Parameters {
@@ -26,12 +26,12 @@ struct Parameters {
 Energy lagrangian(Parameters p, Configuration c) {
     assert(p.m.value() > 0);
     assert(p.k.value() > 0);
-    return p.m * c.v * c.v / 2.0 - p.k * c.x * c.x / 2.0;
+    return p.m * (c.velocity * c.velocity) / 2.0 - p.k * (c.position * c.position) / 2.0;
 }
 
-Force force(Parameters p, Configuration c1, Length dx) {
-   Configuration c2 = { c1.x + dx, c1.v };
-   return (lagrangian(p, c2) - lagrangian(p, c1)) / dx;
+Force force(Parameters p, Configuration c, Length dx) {
+   Configuration cx = { c.position + dx, c.velocity };
+   return (lagrangian(p, cx) - lagrangian(p, c)) / dx;
 }
 
 int main()
