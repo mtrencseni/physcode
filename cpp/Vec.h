@@ -4,7 +4,7 @@
 template<unsigned int n, class T>
 struct Vec {
     T val[n];
-    const std::string str() {
+    std::string str() const {
         std::ostringstream s;
         s << "(";
         for (auto i = 0; i < n; i++) {
@@ -14,6 +14,10 @@ struct Vec {
         }
         s << ")";
         return s.str();
+    }
+    T& operator[](unsigned int i) {
+        assert(i < n);
+        return val[n];
     }
 };
 

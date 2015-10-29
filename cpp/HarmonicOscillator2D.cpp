@@ -30,7 +30,8 @@ struct Parameters {
 };
 
 Energy lagrangian(Parameters p, Configuration c) {
-    assert(p.k.value > 0);
+    assert(p.m.value() > 0);
+    assert(p.k.value() > 0);
     return p.m * (c.velocity * c.velocity) / 2.0 - p.k * (c.position * c.position) / 2.0;
 }
 
@@ -44,14 +45,13 @@ Force2 force(Parameters p, Configuration c, Length dx) {
 }
 
 Acceleration2 acceleration(Parameters p, Configuration c, Length dx) {
-   return force(p, c, dx) / p.m;
+    return force(p, c, dx) / p.m;
 }
 
 Configuration step(Parameters p, Configuration c, Length dx, Time dt) {
-   
-   Configuration cp =  { c.position + c.velocity * dt,
-                         c.velocity + acceleration(p, c, dx) * dt };
-   return cp;
+    Configuration cp =  { c.position + c.velocity * dt,
+                          c.velocity + acceleration(p, c, dx) * dt };
+    return cp;
 }
 
 int main()

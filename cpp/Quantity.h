@@ -1,6 +1,14 @@
 #include <string>
 #include <sstream>
 
+/* === Quantity === */
+/*
+ *
+ * A quantity represent a physical quantity: a numeric value (like 1.2) and a dimension (like m/s).
+ * Right now it supports length, mass and time.
+ *
+ */
+
 std::string format(const std::string base, const int exponent) {
     std::ostringstream s;
     if (exponent != 0) {    
@@ -38,14 +46,15 @@ Unit<0, 0, 1> second;
 
 template<int l, int m, int t, class T>
 struct Quantity {
-	T value;
-	Quantity (T v) : value(v) {}
-	Quantity () : value(0) {}
-	Quantity& operator=(T v) { value = v; }
-    const std::string str() {
+	T val;
+	Quantity (T val_) : val(val_) {}
+	Quantity () : val(0) {}
+    T value() const { return val; }
+	Quantity& operator=(T val_) { val = val_; }
+    std::string str() const {
         Unit<l, m, t> u;
         std::ostringstream s;
-        s << value;
+        s << val;
         s << " ";
         s << u.str();
         return s.str();
@@ -73,7 +82,7 @@ template<int l1, int m1, int t1, int l2, int m2, int t2, class T>
 Quantity<l1+l2, m1+m2, t1+t2, T> operator*(const Quantity<l1, m1, t1, T>& q1,
                                            const Unit<l2, m2, t2>& u2)
 {
-    return Quantity<l1+l2, m1+m2, t1+t2, T>(q1.value);
+    return Quantity<l1+l2, m1+m2, t1+t2, T>(q1.value());
 }
 
 /* divide a Quantity by a Unit, eg. (1*meter)/second */
@@ -81,7 +90,7 @@ template<int l1, int m1, int t1, int l2, int m2, int t2, class T>
 Quantity<l1-l2, m1-m2, t1-t2, T> operator/(const Quantity<l1, m1, t1, T>& q1,
                                            const Unit<l2, m2, t2>& u2)
 {
-    return Quantity<l1-l2, m1-m2, t1-t2, T>(q1.value);
+    return Quantity<l1-l2, m1-m2, t1-t2, T>(q1.value());
 }
 
 /* multiply a T by a Unit to get a Quantity, eg. 5.0 * meter */
@@ -105,7 +114,7 @@ template<int l, int m, int t, class T>
 Quantity<l, m, t, T> operator*(const T& val,
                                const Quantity<l, m, t, T>& q)
 {
-    return Quantity<l, m, t, T>(val * q.value);
+    return Quantity<l, m, t, T>(val * q.value());
 }
 
 /* multiply a Quantity by a T to get a Quantity */
@@ -113,7 +122,7 @@ template<int l, int m, int t, class T>
 Quantity<l, m, t, T> operator*(const Quantity<l, m, t, T>& q,
                                const T& val)
 {
-    return Quantity<l, m, t, T>(val * q.value);
+    return Quantity<l, m, t, T>(val * q.value());
 }
 
 /* divide a Quantity by T to get a Quantity */
@@ -121,7 +130,7 @@ template<int l, int m, int t, class T>
 Quantity<l, m, t, T> operator/(const Quantity<l, m, t, T>& q,
                                const T& val)
 {
-    return Quantity<l, m, t, T>(q.value / val);
+    return Quantity<l, m, t, T>(q.value() / val);
 }
 
 /* divide a T by a Quantity to get a Quantity */
@@ -129,7 +138,7 @@ template<int l, int m, int t, class T>
 Quantity<-l, -m, -t, T> operator/(const T& val,
                                   const Quantity<l, m, t, T>& q)
 {
-    return Quantity<-l, -m, -t, T>(val / q.value);
+    return Quantity<-l, -m, -t, T>(val / q.value());
 }
 
 /* multiply two quantities */
@@ -137,7 +146,7 @@ template<int l1, int m1, int t1, int l2, int m2, int t2, class T>
 Quantity<l1+l2, m1+m2, t1+t2, T> operator*(const Quantity<l1, m1, t1, T>& q1,
                                            const Quantity<l2, m2, t2, T>& q2)
 {
-    T res = q1.value * q2.value;
+    T res = q1.value() * q2.value();
     return Quantity<l1+l2, m1+m2, t1+t2, T>(res);
 }
 
@@ -146,7 +155,7 @@ template<int l1, int m1, int t1, int l2, int m2, int t2, class T>
 Quantity<l1-l2, m1-m2, t1-t2, T> operator/(const Quantity<l1, m1, t1, T>& q1,
                                            const Quantity<l2, m2, t2, T>& q2)
 {
-    return Quantity<l1-l2, m1-m2, t1-t2, T>(q1.value / q2.value);
+    return Quantity<l1-l2, m1-m2, t1-t2, T>(q1.val / q2.value());
 }
 
 /* add two quantities */
@@ -154,7 +163,7 @@ template<int l, int m, int t, class T>
 Quantity<l, m, t, T> operator+(const Quantity<l, m, t, T>& q1,
                                const Quantity<l, m, t, T>& q2)
 {
-    return Quantity<l, m, t, T>(q1.value + q2.value);
+    return Quantity<l, m, t, T>(q1.value() + q2.value());
 }
 
 /* divide two quantities */
@@ -162,7 +171,7 @@ template<int l, int m, int t, class T>
 Quantity<l, m, t, T> operator-(const Quantity<l, m, t, T>& q1,
                                const Quantity<l, m, t, T>& q2)
 {
-    return Quantity<l, m, t, T>(q1.value - q2.value);
+    return Quantity<l, m, t, T>(q1.value() - q2.value());
 }
 
 /* common multipliers */

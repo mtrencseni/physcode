@@ -32,18 +32,21 @@ struct Parameters {
 };
 
 Force2 force(Parameters p, Configuration c) {
-   return -1.0 * (p.k * c.position) - p.c * c.velocity;
+    assert(p.m.value() > 0);
+    assert(p.k.value() > 0);
+    assert(p.c.value() > 0);
+    return -1.0 * (p.k * c.position) - p.c * c.velocity;
 }
 
 Acceleration2 acceleration(Parameters p, Configuration c) {
-   return force(p, c) / p.m;
+    return force(p, c) / p.m;
 }
 
 Configuration step(Parameters p, Configuration c, Time dt) {
    
-   Configuration cp =  { c.position + c.velocity * dt,
-                         c.velocity + acceleration(p, c) * dt };
-   return cp;
+    Configuration cp =  { c.position + c.velocity * dt,
+                          c.velocity + acceleration(p, c) * dt };
+    return cp;
 }
 
 int main()
