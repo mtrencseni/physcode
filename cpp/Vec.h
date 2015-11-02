@@ -1,76 +1,83 @@
 #include <string>
 #include <sstream>
 
-template<unsigned int n, class T>
+/* === Vec === */
+/*
+ *
+ * A very simple vector class to store n values each of type T.
+ *
+ */
+
+template<unsigned int dim, class T>
 struct Vec {
-    T val[n];
+    T val[dim];
     std::string str() const {
         std::ostringstream s;
         s << "(";
-        for (auto i = 0; i < n; i++) {
+        for (auto i = 0; i < dim; i++) {
             s << val[i];
-            if (i < (n-1))
+            if (i < (dim-1))
                 s << ", ";
         }
         s << ")";
         return s.str();
     }
     T& operator[](unsigned int i) {
-        assert(i < n);
-        return val[n];
+        assert(i < dim);
+        return val[i];
     }
 };
 
 /* add two Vecs */
-template<unsigned int n, class T>
-Vec<n, T> operator+(const Vec<n, T>& a, const Vec<n, T>& b) {
-    Vec<n, T> res;
-    for (auto i = 0; i < n; i++)
+template<unsigned int dim, class T>
+Vec<dim, T> operator+(const Vec<dim, T>& a, const Vec<dim, T>& b) {
+    Vec<dim, T> res;
+    for (auto i = 0; i < dim; i++)
         res.val[i] = a.val[i] + b.val[i];
     return res;
 }
 
 /* subtract two Vecs */
-template<unsigned int n, class T>
-Vec<n, T> operator-(const Vec<n, T>& a, const Vec<n, T>& b) {
-    Vec<n, T> res;
-    for (auto i = 0; i < n; i++)
+template<unsigned int dim, class T>
+Vec<dim, T> operator-(const Vec<dim, T>& a, const Vec<dim, T>& b) {
+    Vec<dim, T> res;
+    for (auto i = 0; i < dim; i++)
         res.val[i] = a.val[i] - b.val[i];
     return res;
 }
 
 /* multiply two Vecs */
-template<unsigned int n, class T>
-T operator*(const Vec<n, T>& a, const Vec<n, T>& b) {
+template<unsigned int dim, class T>
+T operator*(const Vec<dim, T>& a, const Vec<dim, T>& b) {
     T res = 0;
-    for (auto i = 0; i < n; i++)
+    for (auto i = 0; i < dim; i++)
         res += (a.val[i] * b.val[i]);
     return res;
 }
 
 /* multiply Vec by a scalar */
-template<unsigned int n, class T>
-Vec<n, T> operator*(const Vec<n, T>& a, const T& b) {
-    Vec<n, T> res;
-    for (auto i = 0; i < n; i++)
+template<unsigned int dim, class T>
+Vec<dim, T> operator*(const Vec<dim, T>& a, const T& b) {
+    Vec<dim, T> res;
+    for (auto i = 0; i < dim; i++)
         res.val[i] = a.val[i] * b;
     return res;
 }
 
 /* multiply a scalar by a Vec */
-template<unsigned int n, class T>
-Vec<n, T> operator*(const T& b, const Vec<n, T>& a) {
-    Vec<n, T> res;
-    for (auto i = 0; i < n; i++)
+template<unsigned int dim, class T>
+Vec<dim, T> operator*(const T& b, const Vec<dim, T>& a) {
+    Vec<dim, T> res;
+    for (auto i = 0; i < dim; i++)
         res.val[i] = a.val[i] * b;
     return res;
 }
 
 /* divide a Vec by a scalar */
-template<unsigned int n, class T>
-Vec<n, T> operator/(const Vec<n, T>& a, const T& b) {
-    Vec<n, T> res;
-    for (auto i = 0; i < n; i++)
+template<unsigned int dim, class T>
+Vec<dim, T> operator/(const Vec<dim, T>& a, const T& b) {
+    Vec<dim, T> res;
+    for (auto i = 0; i < dim; i++)
         res.val[i] = a.val[i] / b;
     return res;
 }
