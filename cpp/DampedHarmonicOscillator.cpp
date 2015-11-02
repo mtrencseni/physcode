@@ -5,15 +5,15 @@
 /* === 1D Damped harmonic oscillator === */
 
 
-typedef Quantity<1,  0,  0, double> Length;
-typedef Quantity<0,  1,  0, double> Mass;
-typedef Quantity<0,  0,  1, double> Time;
-typedef Quantity<1,  0, -1, double> Velocity;
-typedef Quantity<1,  0, -2, double> Acceleration;
-typedef Quantity<1,  1, -2, double> Force;
-typedef Quantity<2,  1, -2, double> Energy;
-typedef Quantity<0,  1, -2, double> SpringConstant;
-typedef Quantity<0,  1, -1, double> DampingConstant;
+typedef Quantity<1,  0,  0, 0, 0, 0, 0, double> Length;
+typedef Quantity<0,  1,  0, 0, 0, 0, 0, double> Mass;
+typedef Quantity<0,  0,  1, 0, 0, 0, 0, double> Time;
+typedef Quantity<1,  0, -1, 0, 0, 0, 0, double> Velocity;
+typedef Quantity<1,  0, -2, 0, 0, 0, 0, double> Acceleration;
+typedef Quantity<1,  1, -2, 0, 0, 0, 0, double> Force;
+typedef Quantity<2,  1, -2, 0, 0, 0, 0, double> Energy;
+typedef Quantity<0,  1, -2, 0, 0, 0, 0, double> SpringConstant;
+typedef Quantity<0,  1, -1, 0, 0, 0, 0, double> DampingConstant;
 
 struct Configuration {
     Length   position;
