@@ -8,7 +8,7 @@ typedef Vec<2, double> Vec2;
 Vec2 ex = {1, 0};
 Vec2 ey = {0, 1};
 
-typedef    Quantity<1,  0,  0, 0, 0, 0, 0,   double> Length;
+typedef    Quantity<1,  0,  0, 0, 0, 0, 0,    double> Length;
 typedef VecQuantity<1,  0,  0, 0, 0, 0, 0, 2, double> Length2;
 typedef    Quantity<0,  1,  0, 0, 0, 0, 0,    double> Mass;
 typedef    Quantity<0,  0,  1, 0, 0, 0, 0,    double> Time;

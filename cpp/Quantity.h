@@ -31,6 +31,13 @@ struct Quantity {
         s << u.str();
         return s.str();
     }
+    /* add */
+    Quantity<l, m, t, i, th, n, j, T>& operator+=(
+        const Quantity<l, m, t, i, th, n, j, T>& q)
+        {
+            val += q.val;
+            return *this;
+        }
 };
 
 /* multiply a Quantity by a Unit, eg. (1*meter)*meter */
@@ -156,6 +163,12 @@ Quantity<l, m, t, i, th, n, j, T>
     const Quantity<l, m, t, i, th, n, j, T>& q2)
 {
     return Quantity<l, m, t, i, th, n, j, T>(q1.value() - q2.value());
+}
+
+template<int l, int m, int t, int i, int th, int n, int j, class T>
+Quantity<l/2, m/2, t/2, i/2, th/2, n/2, j/2, T> sqrt(Quantity<l, m, t, i, th, n, j, T> v)
+{
+    return Quantity<l/2, m/2, t/2, i/2, th/2, n/2, j/2, T>(v.val);
 }
 
 /* common multipliers */
