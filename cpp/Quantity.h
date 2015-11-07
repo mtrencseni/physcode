@@ -168,7 +168,7 @@ Quantity<l, m, t, i, th, n, j, T>
 template<int l, int m, int t, int i, int th, int n, int j, class T>
 Quantity<l/2, m/2, t/2, i/2, th/2, n/2, j/2, T> sqrt(Quantity<l, m, t, i, th, n, j, T> v)
 {
-    return Quantity<l/2, m/2, t/2, i/2, th/2, n/2, j/2, T>(v.val);
+    return Quantity<l/2, m/2, t/2, i/2, th/2, n/2, j/2, T>(sqrt(v.val));
 }
 
 /* common multipliers */
