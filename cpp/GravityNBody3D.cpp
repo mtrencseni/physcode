@@ -86,22 +86,38 @@ int main()
     Parameters     ps;
     Configurations cs;
 
-    const unsigned  N = 8;
-    Length         dx = 0.001 * meter;
-    Time           dt = 0.001 * second;
+    const unsigned  N = 2;
+    Length         dx = 0.00001 * meter;
+    Time           dt = 0.00001 * second;
                  ps.G = 6.674 * pow(10, -11) * Newton * meter * meter / (kilo * gram * kilo * gram);
 
     std::uniform_real_distribution<double>  uni(0.0, 1.0);
     std::random_device                      rd;
     std::mt19937                            re(rd());
+
+    // test
+    // ps.G = 1.0 * (gram * meter / (second * second)) * meter * meter / (kilo * gram * kilo * gram);
+    // ps.m.push_back(10.0 * kilo * gram);
+    // ps.m.push_back(1.0 * kilo * gram);
+    // cs.position.push_back((0.0 * ex + 0.0 * ey + 0.0 * ez) * meter);
+    // cs.position.push_back((1.0 * ex + 0.0 * ey + 0.0 * ez) * meter);
+    // cs.velocity.push_back((uni(re) * ex + uni(re) * ey + uni(re) * ez) * meter / second);
+    // cs.velocity.push_back((uni(re) * ex + uni(re) * ey + uni(re) * ez) * meter / second);
+    // std::cout << "forces:" << std::endl;
+    // std::cout << force(0, ps, cs, dx).str() << std::endl;
+    // std::cout << force(1, ps, cs, dx).str() << std::endl;
+    // std::cout << "accelerations:" << std::endl;
+    // std::cout << acceleration(0, ps, cs, dx).str() << std::endl;
+    // std::cout << acceleration(1, ps, cs, dx).str() << std::endl;
+
     for (unsigned i = 0; i < N; i++)
     {
         ps.m.push_back(uni(re)* kilo * gram);
         cs.position.push_back((uni(re) * ex + uni(re) * ey + uni(re) * ez) * meter);
-        cs.velocity.push_back((uni(re) * ex + uni(re) * ey + uni(re) * ez) * meter / second); 
-    }    
-
-    for (unsigned i = 0; i < 10000; i++)
+        cs.velocity.push_back((uni(re) * ex + uni(re) * ey + uni(re) * ez) * meter / second);
+    }
+    
+    for (unsigned i = 0; i < 10; i++)
     {
         std::cout << i << std::endl;
         cs = step(ps, cs, dx, dt);
