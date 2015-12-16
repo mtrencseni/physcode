@@ -2,8 +2,7 @@
 #include <sstream>
 #include "Unit.h"
 
-/* === Quantity === */
-/*
+/* === Quantity ===
  *
  * A quantity represent a physical quantity: a numeric value (like 1.2) and a dimension (like m/s).
  *  l   -- Length

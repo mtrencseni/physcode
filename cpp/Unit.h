@@ -11,6 +11,8 @@
  *  n   -- Amount of substance
  *  j   -- Luminous intensity
  *
+ *  https://en.wikipedia.org/wiki/SI_base_unit
+ *
  */
 
  std::string format(const std::string base, const int exponent) {
@@ -63,6 +65,10 @@ struct Unit {
 Unit<1, 0, 0, 0, 0, 0, 0> meter;
 Unit<0, 1, 0, 0, 0, 0, 0> gram;
 Unit<0, 0, 1, 0, 0, 0, 0> second;
+Unit<0, 0, 0, 1, 0, 0, 0> ampere;
+Unit<0, 0, 0, 0, 1, 0, 0> kelvin;
+Unit<0, 0, 0, 0, 0, 1, 0> candela;
+Unit<0, 0, 0, 0, 0, 0, 1> mole;
 
 /* multiply a Unit by a Unit, eg. meter*gram */
 template<int l1, int m1, int t1, int i1, int th1, int n1, int j1,

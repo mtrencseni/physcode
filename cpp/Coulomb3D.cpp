@@ -4,25 +4,27 @@
 #include <random>
 #include "VecQuantity.h"
 
-/* === Newtonian gravity in 3D, with N bodies === */
+/* === Coulomb's law in 3D, with N bodies === */
 
 typedef Vec<3, double> Vec3;
 Vec3 ex = {1, 0, 0};
 Vec3 ey = {0, 1, 0};
 Vec3 ez = {0, 0, 1};
 
-typedef    Quantity<1,  0,  0, 0, 0, 0, 0,    double> Length;
-typedef VecQuantity<1,  0,  0, 0, 0, 0, 0, 3, double> Length3;
-typedef    Quantity<0,  1,  0, 0, 0, 0, 0,    double> Mass;
-typedef    Quantity<0,  0,  1, 0, 0, 0, 0,    double> Time;
-typedef VecQuantity<1,  0, -1, 0, 0, 0, 0, 3, double> Velocity3;
-typedef VecQuantity<1,  0, -2, 0, 0, 0, 0, 3, double> Acceleration3;
-typedef    Quantity<1,  1, -2, 0, 0, 0, 0,    double> Force;
-typedef VecQuantity<1,  1, -2, 0, 0, 0, 0, 3, double> Force3;
-typedef    Quantity<2,  1, -2, 0, 0, 0, 0,    double> Energy;
-typedef    Quantity<3, -1, -2, 0, 0, 0, 0,    double> GravitationalConstant;
+typedef    Quantity<1,  0,  0,  0, 0, 0, 0,    double> Length;
+typedef VecQuantity<1,  0,  0,  0, 0, 0, 0, 3, double> Length3;
+typedef    Quantity<0,  1,  0,  0, 0, 0, 0,    double> Mass;
+typedef    Quantity<0,  0,  1,  0, 0, 0, 0,    double> Time;
+typedef VecQuantity<1,  0, -1,  0, 0, 0, 0, 3, double> Velocity3;
+typedef VecQuantity<1,  0, -2,  0, 0, 0, 0, 3, double> Acceleration3;
+typedef    Quantity<1,  1, -2,  0, 0, 0, 0,    double> Force;
+typedef VecQuantity<1,  1, -2,  0, 0, 0, 0, 3, double> Force3;
+typedef    Quantity<2,  1, -2,  0, 0, 0, 0,    double> Energy;
+typedef    Quantity<0,  0,  1,  1, 0, 0, 0,    double> Charge;
+typedef    Quantity<3,  1, -4, -2, 0, 0, 0,    double> CoulombsConstant;
 
-const Force Newton = 1.0 * kilo * gram * meter / (second * second);
+const Force  Newton  = 1.0 * kilo * gram * meter / (second * second);
+const Charge Coulomb = 1.0 * ampere * second;
 
 struct Configurations
 {
@@ -33,7 +35,8 @@ struct Configurations
 struct Parameters
 {
     std::vector<Mass>       m;
-    GravitationalConstant   G;
+    std::vector<Charge>     q;
+    CoulombsConstant        k;
 };
 
 Energy lagrangian(unsigned i, Parameters ps, Configurations cs)
@@ -43,7 +46,7 @@ Energy lagrangian(unsigned i, Parameters ps, Configurations cs)
     {
         if (i == j)
             continue;
-        l += ps.G * ps.m[i] * ps.m[j] / sqrt((cs.position[i] - cs.position[j]) * (cs.position[i] - cs.position[j]));
+        l += -1.0 * ps.k * ps.q[i] * ps.q[j] / sqrt((cs.position[i] - cs.position[j]) * (cs.position[i] - cs.position[j]));
     }
     return l;
 }
@@ -89,20 +92,22 @@ int main()
     const unsigned  N = 2;
     Length         dx = 0.00001 * meter;
     Time           dt = 0.00001 * second;
-                 ps.G = 6.674 * pow(10, -11) * Newton * meter * meter / (kilo * gram * kilo * gram);
+                 ps.k = 8.987 * pow(10, 9) * Newton * meter * meter / (Coulomb * Coulomb);
 
     std::uniform_real_distribution<double>  uni(0.0, 1.0);
     std::random_device                      rd;
     std::mt19937                            re(rd());
 
     // test
-    // ps.G = 1.0 * (gram * meter / (second * second)) * meter * meter / (kilo * gram * kilo * gram);
-    // ps.m.push_back(10.0 * kilo * gram);
+    // ps.k = 1.0 * Newton * meter * meter / (Coulomb * Coulomb);
     // ps.m.push_back(1.0 * kilo * gram);
+    // ps.m.push_back(1.0 * kilo * gram);
+    // ps.q.push_back(1.0 * Coulomb);
+    // ps.q.push_back(-1.0 * Coulomb);
     // cs.position.push_back((0.0 * ex + 0.0 * ey + 0.0 * ez) * meter);
     // cs.position.push_back((1.0 * ex + 0.0 * ey + 0.0 * ez) * meter);
-    // cs.velocity.push_back((uni(re) * ex + uni(re) * ey + uni(re) * ez) * meter / second);
-    // cs.velocity.push_back((uni(re) * ex + uni(re) * ey + uni(re) * ez) * meter / second);
+    // cs.velocity.push_back((0.0 * ex + 0.0 * ey + 0.0 * ez) * meter / second);
+    // cs.velocity.push_back((0.0 * ex + 0.0 * ey + 0.0 * ez) * meter / second);
     // std::cout << "forces:" << std::endl;
     // std::cout << force(0, ps, cs, dx).str() << std::endl;
     // std::cout << force(1, ps, cs, dx).str() << std::endl;
@@ -113,6 +118,7 @@ int main()
     for (unsigned i = 0; i < N; i++)
     {
         ps.m.push_back(uni(re)* kilo * gram);
+        ps.q.push_back(uni(re)* Coulomb);
         cs.position.push_back((uni(re) * ex + uni(re) * ey + uni(re) * ez) * meter);
         cs.velocity.push_back((uni(re) * ex + uni(re) * ey + uni(re) * ez) * meter / second);
     }
