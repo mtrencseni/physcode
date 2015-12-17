@@ -62,13 +62,14 @@ struct Unit {
     }
 };
 
-Unit<1, 0, 0, 0, 0, 0, 0> meter;
-Unit<0, 1, 0, 0, 0, 0, 0> gram;
-Unit<0, 0, 1, 0, 0, 0, 0> second;
-Unit<0, 0, 0, 1, 0, 0, 0> ampere;
-Unit<0, 0, 0, 0, 1, 0, 0> kelvin;
-Unit<0, 0, 0, 0, 0, 1, 0> candela;
-Unit<0, 0, 0, 0, 0, 0, 1> mole;
+Unit< 1,  0,  0,  0,  0,  0,  0> meter;
+Unit< 0,  1,  0,  0,  0,  0,  0> gram;
+Unit< 0,  0,  1,  0,  0,  0,  0> second;
+Unit< 0,  0,  0,  1,  0,  0,  0> ampere;
+Unit< 0,  0,  0,  0,  1,  0,  0> kelvin;
+Unit< 0,  0,  0,  0,  0,  1,  0> candela;
+Unit< 0,  0,  0,  0,  0,  0,  1> mol;
+Unit<-1,  1, -2,  0,  0,  0,  0> pascal;
 
 /* multiply a Unit by a Unit, eg. meter*gram */
 template<int l1, int m1, int t1, int i1, int th1, int n1, int j1,
