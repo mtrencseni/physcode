@@ -171,4 +171,4 @@ Quantity<l/2, m/2, t/2, i/2, th/2, n/2, j/2, T> sqrt(Quantity<l, m, t, i, th, n,
 }
 
 /* common multipliers */
-double kilo = 1000;
+double kilo = 1000.0;

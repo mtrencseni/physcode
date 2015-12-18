@@ -23,9 +23,6 @@ typedef    Quantity<2,  1, -2,  0, 0, 0, 0,    double> Energy;
 typedef    Quantity<0,  0,  1,  1, 0, 0, 0,    double> Charge;
 typedef    Quantity<3,  1, -4, -2, 0, 0, 0,    double> CoulombsConstant;
 
-const Force  Newton  = 1.0 * kilo * gram * meter / (second * second);
-const Charge Coulomb = 1.0 * ampere * second;
-
 struct Configurations
 {
     std::vector<Length3>    position;
@@ -92,18 +89,18 @@ int main()
     const unsigned  N = 2;
     Length         dx = 0.00001 * meter;
     Time           dt = 0.00001 * second;
-                 ps.k = 8.987 * pow(10, 9) * Newton * meter * meter / (Coulomb * Coulomb);
+                 ps.k = 8.987 * pow(10, 9) * newton * meter * meter / (coulomb * coulomb);
 
     std::uniform_real_distribution<double>  uni(0.0, 1.0);
     std::random_device                      rd;
     std::mt19937                            re(rd());
 
     // test
-    // ps.k = 1.0 * Newton * meter * meter / (Coulomb * Coulomb);
-    // ps.m.push_back(1.0 * kilo * gram);
-    // ps.m.push_back(1.0 * kilo * gram);
-    // ps.q.push_back(1.0 * Coulomb);
-    // ps.q.push_back(-1.0 * Coulomb);
+    // ps.k = 1.0 * newton * meter * meter / (coulomb * coulomb);
+    // ps.m.push_back(1.0 * kilogram);
+    // ps.m.push_back(1.0 * kilogram);
+    // ps.q.push_back(1.0 * coulomb);
+    // ps.q.push_back(-1.0 * coulomb);
     // cs.position.push_back((0.0 * ex + 0.0 * ey + 0.0 * ez) * meter);
     // cs.position.push_back((1.0 * ex + 0.0 * ey + 0.0 * ez) * meter);
     // cs.velocity.push_back((0.0 * ex + 0.0 * ey + 0.0 * ez) * meter / second);
@@ -117,8 +114,8 @@ int main()
 
     for (unsigned i = 0; i < N; i++)
     {
-        ps.m.push_back(uni(re)* kilo * gram);
-        ps.q.push_back(uni(re)* Coulomb);
+        ps.m.push_back(uni(re)* kilogram);
+        ps.q.push_back(uni(re)* coulomb);
         cs.position.push_back((uni(re) * ex + uni(re) * ey + uni(re) * ez) * meter);
         cs.velocity.push_back((uni(re) * ex + uni(re) * ey + uni(re) * ez) * meter / second);
     }

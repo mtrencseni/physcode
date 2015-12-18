@@ -36,7 +36,7 @@ Force force(Parameters p, Configuration c, Length dx) {
 
 int main()
 {
-   Parameters     p = { 1.0 * kilo * gram, 3.0 * kilo * gram / (second * second) };
+   Parameters     p = { 1.0 * kilogram, 3.0 * kilogram / (second * second) };
    Configuration  c = { 5.0 * meter, 9.0 * meter / second };
    Length        dx = 0.001 * meter;
    

@@ -56,8 +56,8 @@ Configuration step(Parameters p, Configuration c, Length dx, Time dt) {
 
 int main()
 {
-    Parameters    p = { 1.0  * kilo * gram,
-                        50.0 * kilo * gram / (second * second) };
+    Parameters    p = { 1.0  * kilogram,
+                        50.0 * kilogram / (second * second) };
     Configuration c = { (2.0 * ex + 2.0 * ey) * meter,
                         (0.0 * ex + 0.0 * ey) * meter / second };
     Length        dx = 0.001 * meter;

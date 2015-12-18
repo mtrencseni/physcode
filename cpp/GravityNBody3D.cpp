@@ -22,8 +22,6 @@ typedef VecQuantity<1,  1, -2, 0, 0, 0, 0, 3, double> Force3;
 typedef    Quantity<2,  1, -2, 0, 0, 0, 0,    double> Energy;
 typedef    Quantity<3, -1, -2, 0, 0, 0, 0,    double> GravitationalConstant;
 
-const Force Newton = 1.0 * kilo * gram * meter / (second * second);
-
 struct Configurations
 {
     std::vector<Length3>    position;
@@ -89,16 +87,16 @@ int main()
     const unsigned  N = 2;
     Length         dx = 0.00001 * meter;
     Time           dt = 0.00001 * second;
-                 ps.G = 6.674 * pow(10, -11) * Newton * meter * meter / (kilo * gram * kilo * gram);
+                 ps.G = 6.674 * pow(10, -11) * newton * meter * meter / (kilogram * kilogram);
 
     std::uniform_real_distribution<double>  uni(0.0, 1.0);
     std::random_device                      rd;
     std::mt19937                            re(rd());
 
     // test
-    // ps.G = 1.0 * (gram * meter / (second * second)) * meter * meter / (kilo * gram * kilo * gram);
-    // ps.m.push_back(10.0 * kilo * gram);
-    // ps.m.push_back(1.0 * kilo * gram);
+    // ps.G = 1.0 * (kilogram * meter / (second * second)) * meter * meter / (kilogram * kilogram);
+    // ps.m.push_back(10.0 * kilogram);
+    // ps.m.push_back(1.0 * kilogram);
     // cs.position.push_back((0.0 * ex + 0.0 * ey + 0.0 * ez) * meter);
     // cs.position.push_back((1.0 * ex + 0.0 * ey + 0.0 * ez) * meter);
     // cs.velocity.push_back((uni(re) * ex + uni(re) * ey + uni(re) * ez) * meter / second);
@@ -112,7 +110,7 @@ int main()
 
     for (unsigned i = 0; i < N; i++)
     {
-        ps.m.push_back(uni(re)* kilo * gram);
+        ps.m.push_back(uni(re)* kilogram);
         cs.position.push_back((uni(re) * ex + uni(re) * ey + uni(re) * ez) * meter);
         cs.velocity.push_back((uni(re) * ex + uni(re) * ey + uni(re) * ez) * meter / second);
     }

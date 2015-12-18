@@ -4,7 +4,6 @@
 
 /* === 1D Damped harmonic oscillator === */
 
-
 typedef Quantity<1,  0,  0, 0, 0, 0, 0, double> Length;
 typedef Quantity<0,  1,  0, 0, 0, 0, 0, double> Mass;
 typedef Quantity<0,  0,  1, 0, 0, 0, 0, double> Time;
@@ -46,9 +45,9 @@ Configuration step(Parameters p, Configuration c, Time dt) {
 
 int main()
 {
-    Parameters     p = { 1.0 * kilo * gram,
-                         3.0 * kilo * gram / (second * second),
-                         5.0 * kilo * gram / second };
+    Parameters     p = { 1.0 * kilogram,
+                         3.0 * kilogram / (second * second),
+                         5.0 * kilogram / second };
     Configuration  c = { 5.0 * meter, 9.0 * meter / second };
     Time          dt = 0.001 * second;
 

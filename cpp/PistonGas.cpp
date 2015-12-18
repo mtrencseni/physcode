@@ -4,20 +4,20 @@
 
 /* === Piston + gas thermodynamics === */
 
-typedef Quantity< 1,  0,  0, 0,  0, 0,  0, double> Length;
-typedef Quantity< 2,  0,  0, 0,  0, 0,  0, double> Area;
-typedef Quantity< 3,  0,  0, 0,  0, 0,  0, double> Volume;
-typedef Quantity< 0,  1,  0, 0,  0, 0,  0, double> Mass;
-typedef Quantity< 0,  0,  1, 0,  0, 0,  0, double> Time;
-typedef Quantity< 1,  0, -1, 0,  0, 0,  0, double> Velocity;
-typedef Quantity< 1,  0, -2, 0,  0, 0,  0, double> Acceleration;
-typedef Quantity< 1,  1, -2, 0,  0, 0,  0, double> Force;
-typedef Quantity< 2,  1, -2, 0,  0, 0,  0, double> Energy;
-typedef Quantity<-1,  1, -2, 0,  0, 0,  0, double> Pressure;
-typedef Quantity< 0,  0,  0, 0,  1, 0,  0, double> Temperature;
-typedef Quantity< 0,  0,  0, 0,  0, 0,  1, double> Moles;
-typedef Quantity< 0,  1,  0, 0,  0, 0, -1, double> MolarMass;
-typedef Quantity< 2,  1, -2, 0, -1, 0, -1, double> GasConstant;
+typedef Quantity< 1,  0,  0, 0,  0,  0, 0, double> Length;
+typedef Quantity< 2,  0,  0, 0,  0,  0, 0, double> Area;
+typedef Quantity< 3,  0,  0, 0,  0,  0, 0, double> Volume;
+typedef Quantity< 0,  1,  0, 0,  0,  0, 0, double> Mass;
+typedef Quantity< 0,  0,  1, 0,  0,  0, 0, double> Time;
+typedef Quantity< 1,  0, -1, 0,  0,  0, 0, double> Velocity;
+typedef Quantity< 1,  0, -2, 0,  0,  0, 0, double> Acceleration;
+typedef Quantity< 1,  1, -2, 0,  0,  0, 0, double> Force;
+typedef Quantity< 2,  1, -2, 0,  0,  0, 0, double> Energy;
+typedef Quantity<-1,  1, -2, 0,  0,  0, 0, double> Pressure;
+typedef Quantity< 0,  0,  0, 0,  1,  0, 0, double> Temperature;
+typedef Quantity< 0,  0,  0, 0,  0,  1, 0, double> Moles;
+typedef Quantity< 0,  1,  0, 0,  0, -1, 0, double> MolarMass;
+typedef Quantity< 2,  1, -2, 0, -1, -1, 0, double> GasConstant;
 
 struct Configuration {
     Pressure    gasPressure;    // pressure of the gas
@@ -67,10 +67,10 @@ int main()
     Time           dt = 0.0001 * second;
     Parameters     p = { 1.0 * meter * meter,
                          300.0 * kelvin,
-                         1000.0 * kilo * gram,
-                         1.0 * kilo * gram,
-                         39.948 * gram / mol, // Argon
-                         8.314 * kilo * gram * meter * meter / (second * second * kelvin * mol) // R
+                         1000.0 * kilogram,
+                         1.0 * kilogram,
+                         (39.948/1000.0) * kilogram / mole, // Argon
+                         8.314 * kilogram * meter * meter / (second * second * kelvin * mole) // R
                        };
     Configuration  c = { 0.0 * pascal, // solve for this in the first step
                          1.0 * meter,
