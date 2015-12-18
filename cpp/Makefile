@@ -4,6 +4,8 @@ IDIR=include
 CFLAGS=-std=c++11 -I$(IDIR)
 DEPS = $(IDIR)/Quantity.h $(IDIR)/Unit.h $(IDIR)/Vec.h $(IDIR)/VecQuantity.h
 
+.SUFFIXES:
+
 all: bin/CoulombNBody3D \
 	 bin/DampedHarmonicOscillator \
 	 bin/DampedHarmonicOscillator2D \
