@@ -6,12 +6,12 @@ DEPS = $(IDIR)/Quantity.h $(IDIR)/Unit.h $(IDIR)/Vec.h $(IDIR)/VecQuantity.h
 
 .SUFFIXES:
 
-all: bin/CoulombNBody3D \
-	 bin/DampedHarmonicOscillator \
-	 bin/DampedHarmonicOscillator2D \
-	 bin/GravityNBody3D \
-	 bin/HarmonicOscillator \
-	 bin/HarmonicOscillator2D \
+all: bin/CoulombNBody3D				\
+	 bin/DampedHarmonicOscillator	\
+	 bin/DampedHarmonicOscillator2D	\
+	 bin/GravityNBody3D 			\
+	 bin/HarmonicOscillator 		\
+	 bin/HarmonicOscillator2D 		\
 	 bin/PistonGas
 
 bin/%: %.cpp $(DEPS) | bin
